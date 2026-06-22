@@ -13,20 +13,60 @@ datasource db {
 }
 
 model User {
-  id        String @id @default(cuid())
+  id            String   @id @default(cuid())
+  name          String?
+  email         String?  @unique
+  emailVerified DateTime?
+  image         String?
+  username      String?  @unique
+  bio           String?
 
-  username  String @unique
-  image     String?
-  bio       String?
+  reccs         Recc[]
+  comments      Comment[]
+  likes         Like[]
 
-  reccs     Recc[]
-  comments  Comment[]
-  likes     Like[]
+  followers     Follow[] @relation("Following")
+  following     Follow[] @relation("Follower")
 
-  followers Follow[] @relation("Following")
-  following Follow[] @relation("Follower")
+  accounts      Account[]
+  sessions      Session[]
 
-  createdAt DateTime @default(now())
+  createdAt     DateTime @default(now())
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @id
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
 }
 
 model Recc {
@@ -36,7 +76,7 @@ model Recc {
   description String?
   url         String?
 
-  type        String // BOOK, MOVIE, WEBSITE, VIDEO, etc.
+  type        String
 
   userId      String
   user        User @relation(fields: [userId], references: [id])
