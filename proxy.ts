@@ -13,5 +13,5 @@ export default auth((req) => {
 });
 
 export const config = {
-  matcher: ["/profile", "/following", "/reccs"],
+  matcher: ["/profile", "/following", "/reccs", "/create"],
 };
