@@ -2,10 +2,13 @@
 
 import { prisma } from '@/lib/prisma'
 import { auth } from '@/auth'
-import { NextResponse } from 'next/server';
 
 export async function getProfile() {
-    const session = await auth()
+    const session = await auth();
+
+    if(!session?.user) {
+        return null;
+    }
 
     return {name:session?.user?.name, email:session?.user?.email}
 }

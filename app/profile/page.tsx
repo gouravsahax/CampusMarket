@@ -18,7 +18,7 @@ const page = async () => {
       </div>
 
       <form action={SignOut}>
-        <button className="cursor-pointer px-2 py-1 border-1 border-white hover:bg-white hover:text-black rounded-sm text-md" type="submit">SignOut</button>
+        <button className="cursor-pointer px-2 py-1 border-1 border-white hover:bg-white hover:text-black rounded-sm text-md mt-4" type="submit">SignOut</button>
       </form>
     </div>
   )
