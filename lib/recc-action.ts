@@ -35,3 +35,27 @@ export async function createRecc(data: FormData) {
 
   redirect("/reccs")
 }
+
+export async function getMyReccs() {
+  const session = await auth();
+
+  if (!session?.user) {
+    throw new Error("Unauthorized");
+  }
+
+  const id = session.user.id;
+
+
+  try {
+    const data = prisma.recc.findMany({
+      where : {
+        userId: id
+      }
+    })
+
+    return data;
+  } catch(err) {
+    throw Error("Error occured in recc creation");
+  }
+
+}
