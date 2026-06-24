@@ -84,8 +84,11 @@ model Recc {
   userId      String
   user        User @relation(fields: [userId], references: [id])
 
+  likeCount   Int @default(0)
   likes       Like[]
-  comments    Comment[]
+
+  commentCount Int @default(0)
+  comments     Comment[]
 
   createdAt   DateTime @default(now())
 

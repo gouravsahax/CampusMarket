@@ -45,6 +45,31 @@ export async function createRecc(data: FormData) {
   redirect("/reccs");
 }
 
+export async function getAllRecs() {
+  return await prisma.recc.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      url: true,
+      type: true,
+      likeCount: true,
+      commentCount: true,
+      createdAt: true,
+      userId: true,
+
+      user: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
+}
+
 export async function getMyReccs() {
   const session = await auth();
 

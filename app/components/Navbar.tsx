@@ -7,7 +7,7 @@ const Navbar = () => {
   const path : string = usePathname();
 
   return (
-    <nav className='sticky top-0 bg-zinc-950 w-full'>
+    <nav className='sticky top-0 bg-zinc-950 w-full z-50'>
       <div className='flex justify-between items-center px-4 md:px-8 border-b-2 border-zinc-900'>
         <span className="sm:hidden">dr</span>
         <span className="hidden sm:inline">DeepRecc</span>
