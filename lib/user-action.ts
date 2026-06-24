@@ -10,5 +10,16 @@ export async function getProfile() {
         return null;
     }
 
-    return {name:session?.user?.name, email:session?.user?.email}
+    try{
+        const user = await prisma.user.findFirst({
+            where: {
+                id: session.user.id
+            }
+        })
+
+        // console.log(user);
+        return user
+    } catch {
+        throw new Error("Error in fetching user data");
+    }
 }
