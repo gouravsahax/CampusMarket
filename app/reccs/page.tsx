@@ -11,14 +11,14 @@ const page = async () => {
           Number of reccomendations : {count}
         </div>
         {reccs.map((recc) => (
-          <div key={recc.id} className="border-1 border-zinc-800 px-4 py-2 rounded-sm flex flex-col">
+          <div key={recc.id} className="border-1 border-zinc-800 px-4 py-2 rounded-sm flex flex-col bg-black text-zinc-300">
             <h3 className="text-lg uppercase mb-2">{recc.title}</h3>
             <p className="mb-4">{recc.description}</p>
             <Link className="underline mb-4" href={recc.url || "/"}>{recc.type}</Link>
             <div className="flex gap-2 mb-2">
-              <Link href={`/reccs/edit/${recc.id}`} className="cursor-pointer px-2 py-1 border-1 border-zinc-800 hover:bg-zinc-300 hover:text-black rounded-sm text-md">Edit</Link>
+              <Link href={`/reccs/edit/${recc.id}`} className="cursor-pointer px-2 py-1 border-1 border-green-600 hover:bg-green-600 hover:text-black rounded-sm text-md">Edit</Link>
               <form action={deleteRecc.bind(null, recc.id)}>
-                <button type="submit" className="cursor-pointer px-2 py-1 border-1 border-zinc-800 hover:bg-zinc-300 hover:text-black rounded-sm text-md">Delete</button>
+                <button type="submit" className="cursor-pointer px-2 py-1 border-1 border-red-600 hover:bg-red-600 hover:text-black rounded-sm text-md">Delete</button>
               </form>
             </div>
           </div>

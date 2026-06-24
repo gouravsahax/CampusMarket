@@ -1,11 +1,14 @@
-import React from 'react'
+import HomeNav from "@/app/components/HomeNav";
 
-const page = () => {
+export default function Home() {
   return (
-    <div className="px-4 md:px-8 py-4">
-        following
+    <div className="w-screen flex flex-col items-center gap-3">
+      <div className="w-full min-h-screen lg:w-[40vw] flex flex-col items-center border-x-1 border-zinc-800">
+        <HomeNav/>
+        <div>
+          Following
+        </div>
+      </div>
     </div>
-  )
+  );
 }
-
-export default page
