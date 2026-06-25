@@ -7,8 +7,10 @@ import { updateTag, unstable_cache } from "next/cache";
 import { uploadImage } from "./cloudinary";
 
 const getCachedAllRecs = unstable_cache(
-  async (uid?: string) => {
+  async (uid?: string, skip?: number, take?: number) => {
     return await prisma.recc.findMany({
+      skip,
+      take,
       orderBy: {
         createdAt: "desc",
       },
@@ -38,6 +40,17 @@ const getCachedAllRecs = unstable_cache(
     });
   },
   ["all-reccs"],
+  {
+    tags: ["reccs"],
+    revalidate: 3600,
+  }
+);
+
+const getCachedRecsCount = unstable_cache(
+  async () => {
+    return await prisma.recc.count();
+  },
+  ["reccs-count"],
   {
     tags: ["reccs"],
     revalidate: 3600,
@@ -122,10 +135,23 @@ export async function createRecc(data: FormData) {
   redirect("/reccs");
 }
 
-export async function getAllRecs() {
+export async function getAllRecs(page = 1, limit = 4) {
   const session = await auth();
   const userId = session?.user?.id;
-  return getCachedAllRecs(userId || "anonymous");
+  const skip = (page - 1) * limit;
+  const take = limit;
+
+  const [reccs, total] = await Promise.all([
+    getCachedAllRecs(userId || "anonymous", skip, take),
+    getCachedRecsCount(),
+  ]);
+
+  return {
+    reccs,
+    total,
+    totalPages: Math.ceil(total / limit),
+    currentPage: page,
+  };
 }
 
 export async function getMyReccs() {

@@ -3,14 +3,25 @@ import { getAllRecs } from "@/lib/recc-action";
 import ReccImage from "./components/ReccImage";
 import LikeButton from "./components/LikeButton";
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Home Feed | PeerProducts",
   description: "Browse genuine product recommendations from the PeerProducts community.",
 };
 
-export default async function Home() {
-  const reccs = await getAllRecs();
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const params = await searchParams;
+  if (!params.page) {
+    redirect("/?page=1");
+  }
+
+  const currentPage = parseInt(params.page || "1", 8);
+  const { reccs, totalPages } = await getAllRecs(currentPage, 8);
 
   return (
     <div className="w-screen flex flex-col items-center">
@@ -75,6 +86,42 @@ export default async function Home() {
             ))
           )}
         </div>
+
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="flex justify-center items-center gap-4 py-6 border-t border-zinc-900 mt-auto bg-zinc-950/20">
+            {currentPage > 1 ? (
+              <Link
+                href={`/?page=${currentPage - 1}`}
+                className="px-4 py-2 border border-zinc-800 hover:border-zinc-500 rounded-sm text-sm font-medium transition-colors"
+              >
+                Previous
+              </Link>
+            ) : (
+              <span className="px-4 py-2 border border-zinc-900 text-zinc-600 rounded-sm text-sm font-medium cursor-not-allowed">
+                Previous
+              </span>
+            )}
+
+            <span className="text-sm text-zinc-400">
+              Page {currentPage} of {totalPages}
+            </span>
+
+            {currentPage < totalPages ? (
+              <Link
+                href={`/?page=${currentPage + 1}`}
+                className="px-4 py-2 border border-zinc-800 hover:border-zinc-500 rounded-sm text-sm font-medium transition-colors"
+              >
+                Next
+              </Link>
+            ) : (
+              <span className="px-4 py-2 border border-zinc-900 text-zinc-600 rounded-sm text-sm font-medium cursor-not-allowed">
+                Next
+              </span>
+            )}
+          </div>
+        )}
+
       </div>
     </div>
   );
