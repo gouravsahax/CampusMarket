@@ -1,5 +1,11 @@
 import { getProfile } from "@/lib/user-action";
 import EditProfileForm from "./EditProfileForm";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "My Profile | DeepRecc",
+  description: "View and edit your profile credentials and account settings.",
+};
 
 const page = async () => {
   const data = await getProfile();

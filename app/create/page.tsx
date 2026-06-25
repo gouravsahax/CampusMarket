@@ -1,10 +1,16 @@
 import { createRecc } from "@/lib/recc-action"
 import SubmitButton from "../components/SubmitButton"
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Share a Recommendation | DeepRecc",
+  description: "Recommend a product, book, video, or service with your thoughts.",
+};
 
 const page = () => {
   return (
     <div className='w-screen h-full flex justify-center items-center'>
-        <form action={createRecc} encType="multipart/form-data" className="px-4 py-4 flex flex-col mt-6 w-[96%] md:w-[70%] lg:w-[40%] gap-4">
+        <form action={createRecc} className="px-4 py-4 flex flex-col mt-6 w-[96%] md:w-[70%] lg:w-[40%] gap-4">
 
             <div className="relative z-0 w-full mb-5 group">
                 <input type="text" name="title" className="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer" placeholder=" " required />

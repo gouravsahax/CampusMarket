@@ -240,8 +240,17 @@ export async function toggleLike(reccId: string) {
   const userId = session.user.id;
 
   try {
-    await prisma.$transaction(async (tx) => {
-      const existingLike = await tx.like.findUnique({
+    const existingLike = await prisma.like.findUnique({
+      where: {
+        userId_reccId: {
+          userId,
+          reccId,
+        },
+      },
+    });
+
+    if (existingLike) {
+      await prisma.like.delete({
         where: {
           userId_reccId: {
             userId,
@@ -249,37 +258,26 @@ export async function toggleLike(reccId: string) {
           },
         },
       });
-
-      if (existingLike) {
-        await tx.like.delete({
-          where: {
-            userId_reccId: {
-              userId,
-              reccId,
-            },
-          },
-        });
-        await tx.recc.update({
-          where: { id: reccId },
-          data: { likeCount: { decrement: 1 } },
-        });
-      } else {
-        await tx.like.create({
-          data: {
-            userId,
-            reccId,
-          },
-        });
-        await tx.recc.update({
-          where: { id: reccId },
-          data: { likeCount: { increment: 1 } },
-        });
-      }
-    });
+      await prisma.recc.update({
+        where: { id: reccId },
+        data: { likeCount: { decrement: 1 } },
+      });
+    } else {
+      await prisma.like.create({
+        data: {
+          userId,
+          reccId,
+        },
+      });
+      await prisma.recc.update({
+        where: { id: reccId },
+        data: { likeCount: { increment: 1 } },
+      });
+    }
 
     revalidatePath("/");
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    throw new Error("Failed to toggle like");
+    throw new Error(`Failed to toggle like: ${error.message || error}`);
   }
 }
