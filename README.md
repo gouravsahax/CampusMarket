@@ -35,7 +35,7 @@ To run this application on your local computer:
 
 ### What Was Done
 
-#### 1. Decoupled Architecture Setup
+#### 1. Separated Server & Database Setup
 - Migrated database layer from local container to a cloud-managed **Neon Serverless PostgreSQL** database to separate compute and state.
   *(This means we moved our database out of the main server and onto a specialized cloud service. This frees up our server's memory and lets our database scale automatically as traffic grows.)*
 - Configured secure TLS connection strings between the Next.js app server and Neon.
