@@ -58,14 +58,3 @@ Open [http://localhost:3000](http://localhost:3000) to view the application.
    ```
 
 Open [http://localhost:3000](http://localhost:3000) to view the application.
-
----
-
-## 🤖 GitHub Actions CI/CD
-
-A workflow has been configured in [.github/workflows/docker-publish.yml](file:///d:/peerproducts/.github/workflows/docker-publish.yml) to automatically build and push the Docker image to Docker Hub on every push to the `main` branch.
-
-To enable this, go to your GitHub repository settings and add the following **Repository Secrets** under **Settings > Secrets and variables > Actions**:
-
-* `DOCKERHUB_USERNAME`: Your Docker Hub username (e.g., `gouravsaha`).
-* `DOCKERHUB_TOKEN`: A Personal Access Token generated from Docker Hub (**Account Settings > Security > Personal access tokens**).
